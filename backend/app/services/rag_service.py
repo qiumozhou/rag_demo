@@ -80,12 +80,23 @@ class RAGService:
             # 2. 重排序（如果服务可用且启用）
             if self.reranker_service and self.reranker_service.is_enabled():
                 logger.info(f"使用重排序服务对 {len(retrieved_docs)} 个文档进行重新排序")
+                
+                # 保存原始文档用于性能分析
+                original_docs = retrieved_docs.copy()
+                
                 retrieved_docs = await self.reranker_service.rerank_documents(
                     query=request.question,
                     documents=retrieved_docs,
                     top_k=request.top_k
                 )
                 logger.info(f"重排序完成，最终使用 {len(retrieved_docs)} 个文档")
+                
+                # 可选：分析重排序性能（在调试模式下）
+                if settings.debug:
+                    performance_analysis = self.reranker_service.analyze_rerank_performance(
+                        original_docs, retrieved_docs
+                    )
+                    logger.debug(f"重排序性能分析: {performance_analysis}")
             else:
                 # 如果没有重排序服务，直接截取前top_k个文档
                 retrieved_docs = retrieved_docs[:request.top_k]

@@ -83,9 +83,21 @@ class RerankerService:
             for result in rerank_results:
                 if 0 <= result.index < len(documents):
                     doc = documents[result.index].copy()
-                    doc["rerank_score"] = result.score
-                    doc["original_score"] = doc.get("score", 0.0)
-                    doc["score"] = result.score  # 使用重排序分数作为主要分数
+                    original_score = doc.get("score", 0.0)
+                    rerank_score = result.score
+                    
+                    # 保存原始分数和重排序分数
+                    doc["rerank_score"] = rerank_score
+                    doc["original_score"] = original_score
+                    
+                    # 使用加权组合分数而不是完全替换
+                    # 这样既保留了初检的语义信息，又利用了重排序的优势
+                    rerank_weight = settings.rerank_score_weight
+                    original_weight = settings.original_score_weight
+                    combined_score = rerank_weight * rerank_score + original_weight * original_score
+                    doc["score"] = combined_score
+                    doc["score_type"] = "rerank_combined"
+                    
                     reranked_documents.append(doc)
                     
             if reranked_documents:
@@ -259,6 +271,89 @@ class RerankerService:
         except Exception as e:
             logger.error(f"解析重排序响应失败: {e}")
             return []
+    
+    def analyze_rerank_performance(self, original_docs: List[Dict[str, Any]], reranked_docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        分析重排序性能，检测是否破坏了排序效果
+        
+        Args:
+            original_docs: 原始排序的文档
+            reranked_docs: 重排序后的文档
+            
+        Returns:
+            性能分析结果
+        """
+        if not original_docs or not reranked_docs:
+            return {"status": "no_data"}
+        
+        analysis = {
+            "total_docs": len(original_docs),
+            "reranked_docs": len(reranked_docs),
+            "rerank_changes": 0,
+            "score_improvements": 0,
+            "position_changes": [],
+            "avg_score_change": 0.0,
+            "top_position_stability": 0.0
+        }
+        
+        # 创建原始文档的位置映射
+        original_positions = {doc.get("source", f"doc_{i}"): i for i, doc in enumerate(original_docs)}
+        
+        # 分析位置变化
+        position_changes = []
+        score_changes = []
+        
+        for new_pos, doc in enumerate(reranked_docs):
+            doc_id = doc.get("source", f"doc_{new_pos}")
+            original_pos = original_positions.get(doc_id, -1)
+            
+            if original_pos != -1 and original_pos != new_pos:
+                analysis["rerank_changes"] += 1
+                change = {
+                    "doc_id": doc_id,
+                    "original_position": original_pos,
+                    "new_position": new_pos,
+                    "position_change": original_pos - new_pos,  # 负值表示排名提升
+                    "original_score": doc.get("original_score", 0.0),
+                    "rerank_score": doc.get("rerank_score", 0.0),
+                    "combined_score": doc.get("score", 0.0)
+                }
+                position_changes.append(change)
+                
+                # 计算分数变化
+                if doc.get("rerank_score", 0) > doc.get("original_score", 0):
+                    analysis["score_improvements"] += 1
+                
+                score_change = doc.get("score", 0) - doc.get("original_score", 0)
+                score_changes.append(score_change)
+        
+        analysis["position_changes"] = position_changes
+        
+        # 计算平均分数变化
+        if score_changes:
+            analysis["avg_score_change"] = sum(score_changes) / len(score_changes)
+        
+        # 计算TOP位置稳定性（前3位的变化程度）
+        top_k = min(3, len(reranked_docs))
+        top_stable = 0
+        for i in range(top_k):
+            if i < len(original_docs):
+                original_top_doc = original_docs[i].get("source", f"doc_{i}")
+                reranked_top_doc = reranked_docs[i].get("source", f"doc_{i}")
+                if original_top_doc == reranked_top_doc:
+                    top_stable += 1
+        
+        analysis["top_position_stability"] = top_stable / top_k if top_k > 0 else 0.0
+        
+        # 评估重排序质量
+        if analysis["avg_score_change"] > 0.1 and analysis["score_improvements"] > len(reranked_docs) * 0.3:
+            analysis["quality_assessment"] = "good"
+        elif analysis["avg_score_change"] > 0:
+            analysis["quality_assessment"] = "moderate"
+        else:
+            analysis["quality_assessment"] = "poor"
+        
+        return analysis
     
     async def test_connection(self) -> bool:
         """测试重排序服务连接"""
