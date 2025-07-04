@@ -1,0 +1,330 @@
+# =============================================================================
+# RAG Knowledge System - .gitignore
+# 忽略不需要版本控制的文件和目录
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Python 相关
+# -----------------------------------------------------------------------------
+# 字节码文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 分发/打包
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# 单元测试/覆盖率报告
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# 虚拟环境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# -----------------------------------------------------------------------------
+# Node.js 相关（前端）
+# -----------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Webpack
+.cache/
+dist/
+
+# -----------------------------------------------------------------------------
+# 数据和模型文件
+# -----------------------------------------------------------------------------
+# 数据目录
+data/
+!data/.gitkeep
+
+# 向量数据库
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# 上传的文件
+uploads/
+temp/
+tmp/
+
+# 模型文件
+*.bin
+*.safetensors
+*.h5
+*.onnx
+*.pkl
+*.joblib
+
+# 大型数据文件
+*.csv
+*.json
+*.jsonl
+*.parquet
+*.feather
+*.hdf5
+
+# 文档文件（如果太大）
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+
+# -----------------------------------------------------------------------------
+# 配置和密钥文件
+# -----------------------------------------------------------------------------
+# 环境变量文件
+.env
+.env.*
+!.env.example
+
+# 配置文件
+config.ini
+config.yaml
+config.json
+secrets.yaml
+secrets.json
+
+# API 密钥和证书
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# -----------------------------------------------------------------------------
+# 日志文件
+# -----------------------------------------------------------------------------
+logs/
+*.log
+*.log.*
+log/
+*.out
+
+# -----------------------------------------------------------------------------
+# IDE 和编辑器配置
+# -----------------------------------------------------------------------------
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# -----------------------------------------------------------------------------
+# 系统文件
+# -----------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# -----------------------------------------------------------------------------
+# 缓存和临时文件
+# -----------------------------------------------------------------------------
+# 通用缓存
+cache/
+.cache/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# 浏览器缓存
+.parcel-cache/
+
+# -----------------------------------------------------------------------------
+# 服务相关
+# -----------------------------------------------------------------------------
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# 进程ID文件
+*.pid
+
+# 监控文件
+.monitor
+
+# -----------------------------------------------------------------------------
+# 特定于项目的忽略
+# -----------------------------------------------------------------------------
+# 测试文件
+test_*.py
+*_test.py
+test_output/
+
+# 文档生成
+docs/_build/
+docs/site/
+
+# 性能分析
+*.prof
+
+# 备份文件
+*.backup
+*.bak
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# 媒体文件（如果不需要版本控制）
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.mp3
+*.wav
+*.flac
+
+# -----------------------------------------------------------------------------
+# 保留的空目录标记文件
+# -----------------------------------------------------------------------------
+# 如果需要保留空目录结构，可以添加 .gitkeep 文件
+!.gitkeep 

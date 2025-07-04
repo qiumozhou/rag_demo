@@ -1,0 +1,223 @@
+/* 全局样式重置和基础样式 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 卡片阴影效果 */
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-shadow:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 渐变背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-bg-light {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+/* 动画效果 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide-up-enter-from, .slide-up-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+/* 响应式设计 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+
+/* 自定义按钮样式 */
+.btn-primary {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* 输入框样式增强 */
+.el-input__wrapper {
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.el-input__wrapper:hover {
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* 对话框样式 */
+.el-dialog {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.el-dialog__header {
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  color: white !important;
+  padding: 20px !important;
+}
+
+.el-dialog__title {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+/* 表格样式增强 */
+.el-table {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.el-table th {
+  background: #f8f9fa !important;
+  font-weight: 600 !important;
+}
+
+/* 加载动画 */
+.loading-dots {
+  display: inline-block;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: ''; }
+  40% { content: '.'; }
+  60% { content: '..'; }
+  80%, 100% { content: '...'; }
+}
+
+/* 工具提示样式 */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.tooltip:hover::before {
+  opacity: 1;
+}
+
+/* 状态指示器 */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator.online {
+  background-color: #67c23a;
+  box-shadow: 0 0 0 2px rgba(103, 194, 58, 0.3);
+}
+
+.status-indicator.offline {
+  background-color: #f56c6c;
+  box-shadow: 0 0 0 2px rgba(245, 108, 108, 0.3);
+}
+
+.status-indicator.loading {
+  background-color: #e6a23c;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(230, 162, 60, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(230, 162, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(230, 162, 60, 0); }
+} 
